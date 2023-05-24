@@ -33,7 +33,7 @@
 |19| [Что такое тернарный оператор?](#19)|
 |20| [Что такое деструктуризация?](#20)|
 |21| [Какие способы работы с асинхронным кодом вы знаете?](#21)|
-|22| [e.preventDefault() и e.stopPropagination() для чего нужны?](#22)|
+|22| [e.preventDefault() и e.stopPropagation() для чего нужны?](#22)|
 |23| [Как отслеживать и обрабатывать ошибки в javascript?](#23)|
 |24| [Что такое DOM дерево?](#24)|
 |25| [Что такое event loop?](#25)|
@@ -822,7 +822,7 @@ fetchData();
 
 <div id="22"></div>
 
-## 22. e.preventDefault() и e.stopPropagination() для чего нужны?
+## 22. e.preventDefault() и e.stopPropagation() для чего нужны?
 
 **Подробнее -** [действия браузера по умолчанию](https://learn.javascript.ru/default-browser-action)
 
