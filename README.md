@@ -237,13 +237,16 @@
 |19| [Что такое Babel и для чего он используется?](#other19)
 |20| [Стили написания составных слов в программировании](#other20)
 |21| [JS паттерны (Singleton, Factory, Адаптер)](#other21)
-|22| [REST api vs RESTFullAPi](#other22)
-|23| [unit-test](#other23)
-|24| [IIFE Самовызывающиеся функции](#other24)
-|25| [Function Expression, declarations](#other25)
-|26| [pwa (service-Workers)](#other26)
+|22| [unit-test](#other22)
+|23| [IIFE Самовызывающиеся функции](#other23)
+|24| [Function Expression, declarations](#other24)
+|25| [pwa (service-Workers)](#other25)
+|26| [Agile](#other26)
 |27| [Методологии работы, SCRUM](#other27)
 |28| [Что такое сваггер?](#other28)
+|29| [Что такое GraphQL?](#other28)
+|30| [SSL](#other28)
+|31| [MVC](#other28)
 
 ---
 
