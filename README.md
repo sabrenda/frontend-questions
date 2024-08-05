@@ -108,6 +108,7 @@
 |76| [Распространение события и фазы](#76)|
 |77| [Дескрипторы свойств объекта](#77)|
 |78| [Методы промиса](#78)|
+|79| [Методы статического объекта](#79)|
 
 ---
 
@@ -2805,6 +2806,270 @@ Object.defineProperty(obj, 'name', {
      console.error('Все промисы были отклонены:', error);
    });
    ```
+
+[Оглавление - JavaScript 🔼](#menu)
+
+<div id="79"></div>
+
+## 79. Методы статического объекта
+
+Методы статического объекта в JavaScript — это методы, вызываемые на самом объекте `Object`, а не на его экземплярах. Они предоставляют различные функциональные возможности для работы с объектами. Рассмотрим основные методы статического объекта `Object` с примерами.
+
+### 1. `Object.assign(target, ...sources)`
+
+Копирует все перечисляемые собственные свойства из одного или более исходных объектов в целевой объект.
+
+```javascript
+const target = { a: 1 };
+const source1 = { b: 2 };
+const source2 = { c: 3 };
+
+const result = Object.assign(target, source1, source2);
+console.log(result); // { a: 1, b: 2, c: 3 }
+```
+
+### 2. `Object.create(proto, [propertiesObject])`
+
+Создает новый объект с указанным объектом прототипа и свойствами.
+
+```javascript
+const proto = { greet: function() { console.log('Hello!'); } };
+const obj = Object.create(proto, {
+  name: {
+    value: 'John',
+    writable: true,
+    enumerable: true,
+    configurable: true
+  }
+});
+
+console.log(obj.name); // 'John'
+obj.greet(); // 'Hello!'
+```
+
+### 3. `Object.defineProperty(obj, prop, descriptor)`
+
+Добавляет указанное свойство к объекту или изменяет существующее.
+
+```javascript
+const obj = {};
+Object.defineProperty(obj, 'name', {
+  value: 'John',
+  writable: false, // свойство нельзя изменить
+  enumerable: true,
+  configurable: true
+});
+
+console.log(obj.name); // 'John'
+obj.name = 'Doe'; // Попытка изменить значение
+console.log(obj.name); // 'John' (значение не изменилось)
+```
+
+### 4. `Object.defineProperties(obj, props)`
+
+Добавляет несколько свойств к объекту или изменяет их.
+
+```javascript
+const obj = {};
+Object.defineProperties(obj, {
+  firstName: {
+    value: 'John',
+    writable: true,
+    enumerable: true,
+    configurable: true
+  },
+  lastName: {
+    value: 'Doe',
+    writable: true,
+    enumerable: true,
+    configurable: true
+  }
+});
+
+console.log(obj.firstName); // 'John'
+console.log(obj.lastName); // 'Doe'
+```
+
+### 5. `Object.entries(obj)`
+
+Возвращает массив из пар `[key, value]` перечисляемых свойств объекта.
+
+```javascript
+const obj = { a: 1, b: 2, c: 3 };
+const entries = Object.entries(obj);
+console.log(entries); // [['a', 1], ['b', 2], ['c', 3]]
+```
+
+### 6. `Object.freeze(obj)`
+
+Замораживает объект, делая его неизменяемым.
+
+```javascript
+const obj = { a: 1 };
+Object.freeze(obj);
+
+obj.a = 2; // Ошибка или игнорирование в строгом режиме
+console.log(obj.a); // 1
+```
+
+### 7. `Object.fromEntries(iterable)`
+
+Создает объект из перечисления пар `[key, value]`.
+
+```javascript
+const entries = [['a', 1], ['b', 2], ['c', 3]];
+const obj = Object.fromEntries(entries);
+console.log(obj); // { a: 1, b: 2, c: 3 }
+```
+
+### 8. `Object.getOwnPropertyDescriptor(obj, prop)`
+
+Возвращает дескриптор свойства для указанного свойства объекта.
+
+```javascript
+const obj = { a: 1 };
+const descriptor = Object.getOwnPropertyDescriptor(obj, 'a');
+console.log(descriptor);
+// { value: 1, writable: true, enumerable: true, configurable: true }
+```
+
+### 9. `Object.getOwnPropertyDescriptors(obj)`
+
+Возвращает все дескрипторы свойств объекта.
+
+```javascript
+const obj = { a: 1, b: 2 };
+const descriptors = Object.getOwnPropertyDescriptors(obj);
+console.log(descriptors);
+/* {
+  a: { value: 1, writable: true, enumerable: true, configurable: true },
+  b: { value: 2, writable: true, enumerable: true, configurable: true }
+} */
+```
+
+### 10. `Object.getOwnPropertyNames(obj)`
+
+Возвращает массив всех собственных имен свойств объекта (включая неперечисляемые).
+
+```javascript
+const obj = { a: 1, b: 2 };
+Object.defineProperty(obj, 'c', { value: 3, enumerable: false });
+const names = Object.getOwnPropertyNames(obj);
+console.log(names); // ['a', 'b', 'c']
+```
+
+### 11. `Object.getOwnPropertySymbols(obj)`
+
+Возвращает массив всех символов, являющихся собственными свойствами объекта.
+
+```javascript
+const sym = Symbol('key');
+const obj = { [sym]: 'value' };
+const symbols = Object.getOwnPropertySymbols(obj);
+console.log(symbols); // [Symbol(key)]
+```
+
+### 12. `Object.getPrototypeOf(obj)`
+
+Возвращает прототип (внутреннее [[Prototype]]) объекта.
+
+```javascript
+const proto = {};
+const obj = Object.create(proto);
+console.log(Object.getPrototypeOf(obj) === proto); // true
+```
+
+### 13. `Object.is(value1, value2)`
+
+Определяет, являются ли два значения одинаковыми.
+
+```javascript
+console.log(Object.is(25, 25)); // true
+console.log(Object.is(NaN, NaN)); // true
+console.log(Object.is(0, -0)); // false
+```
+
+### 14. `Object.isExtensible(obj)`
+
+Определяет, можно ли добавлять свойства в объект.
+
+```javascript
+const obj = {};
+console.log(Object.isExtensible(obj)); // true
+Object.preventExtensions(obj);
+console.log(Object.isExtensible(obj)); // false
+```
+
+### 15. `Object.isFrozen(obj)`
+
+Определяет, является ли объект замороженным.
+
+```javascript
+const obj = Object.freeze({});
+console.log(Object.isFrozen(obj)); // true
+```
+
+### 16. `Object.isSealed(obj)`
+
+Определяет, является ли объект запечатанным.
+
+```javascript
+const obj = Object.seal({});
+console.log(Object.isSealed(obj)); // true
+```
+
+### 17. `Object.keys(obj)`
+
+Возвращает массив из имен собственных перечисляемых свойств объекта.
+
+```javascript
+const obj = { a: 1, b: 2, c: 3 };
+const keys = Object.keys(obj);
+console.log(keys); // ['a', 'b', 'c']
+```
+
+### 18. `Object.preventExtensions(obj)`
+
+Предотвращает добавление новых свойств в объект.
+
+```javascript
+const obj = { a: 1 };
+Object.preventExtensions(obj);
+obj.b = 2; // Ошибка или игнорирование в строгом режиме
+console.log(obj.b); // undefined
+```
+
+### 19. `Object.seal(obj)`
+
+Запечатывает объект, предотвращая добавление или удаление свойств.
+
+```javascript
+const obj = { a: 1 };
+Object.seal(obj);
+delete obj.a; // Ошибка или игнорирование в строгом режиме
+console.log(obj.a); // 1
+```
+
+### 20. `Object.setPrototypeOf(obj, proto)`
+
+Устанавливает прототип (внутреннее [[Prototype]]) объекта на другой объект или `null`.
+
+```javascript
+const proto = { greet: function() { console.log('Hello!'); } };
+const obj = {};
+Object.setPrototypeOf(obj, proto);
+obj.greet(); // 'Hello!'
+```
+
+### 21. `Object.values(obj)`
+
+Возвращает массив значений собственных перечисляемых свойств объекта.
+
+```javascript
+const obj = { a: 1, b: 2, c: 3 };
+const values = Object.values(obj);
+console.log(values); // [1, 2, 3]
+```
 
 [Оглавление - JavaScript 🔼](#menu)
 
