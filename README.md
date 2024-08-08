@@ -12,10 +12,13 @@
 |:-------------------------------------|
 | [**JAVASCRIPT**](#menu) |
 | [**TYPESCRIPT**](#menuts) |
-| [**CSS**](#menucss) |
+| [**Html CSS**](#menucss) |
 | [**React**](#menureact)|
 | [**Общие вопросы**](#menuother)|
 | [**Задачи по JavaScript**](#menutasks)|
+| [**Алгоритмы**](#menutasks)|
+| [**Архитектура**](#menutasks)|
+| [**Безопастность**](#menutasks)|
 
 <br>
 <br>
