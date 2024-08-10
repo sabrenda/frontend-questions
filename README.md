@@ -133,9 +133,8 @@
 |97| [**requestAnimationFrame**](#97)
 |98| [**requestIdleCallback**](#98)
 |99| [**fetch()**](#99)
-|100| [-](#100)
-
-
+|100| [**AbortController()**](#100)
+|101| [Какие есть способы для работы с запросами в реакте](#101)
 
 ---
 
@@ -4353,7 +4352,349 @@ postDataToServer('https://jsonplaceholder.typicode.com/posts', postData);
 
 <div id="100"></div>
 
-## 100. 
+## 100. **AbortController()**
+
+`AbortController` — это встроенный объект в JavaScript, предназначенный для управления и отмены асинхронных операций, таких как HTTP-запросы, таймеры и другие долг-running задачи. Он особенно полезен в случаях, когда вы хотите отменить запросы или задачи, которые больше не нужны, например, при размонтировании компонента в React.
+
+### Основные функции `AbortController`:
+
+1. **Отмена запросов**: `AbortController` используется для отмены `fetch` запросов, если они больше не нужны, например, при размонтировании компонента в React.
+
+2. **Сигналы**: `AbortController` создает сигнал (`AbortSignal`), который может быть передан в асинхронные операции. Когда сигнал отменяется, асинхронные операции могут реагировать на это и завершиться.
+
+### Основные методы и свойства:
+
+- **`AbortController`**: Конструктор для создания нового контроллера.
+- **`signal`**: Свойство экземпляра `AbortController`, представляющее `AbortSignal`, который может быть передан в асинхронные операции.
+- **`abort()`**: Метод для отмены всех операций, связанных с контроллером.
+
+### Пример использования `AbortController` с `fetch`
+
+Вот пример, который показывает, как использовать `AbortController` для отмены `fetch` запроса, если компонент размонтируется:
+
+```javascript
+import React, { useState, useEffect } from 'react';
+
+function DataFetchingComponent() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        const { signal } = controller;
+
+        // Выполняем GET-запрос
+        fetch('https://jsonplaceholder.typicode.com/posts/1', { signal })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                setData(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                if (error.name === 'AbortError') {
+                    console.log('Fetch aborted');
+                } else {
+                    setError(error);
+                    setLoading(false);
+                }
+            });
+
+        // Функция очистки, которая отменяет запрос при размонтировании компонента
+        return () => {
+            controller.abort();
+        };
+    }, []); // Пустой массив зависимостей означает, что эффект будет выполнен один раз при монтировании
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    return (
+        <div>
+            <h1>{data.title}</h1>
+            <p>{data.body}</p>
+        </div>
+    );
+}
+
+export default DataFetchingComponent;
+```
+
+### Как это работает:
+1. **Создание контроллера**: В `useEffect` создается новый экземпляр `AbortController`.
+
+2. **Получение сигнала**: Свойство `signal` из контроллера передается в `fetch` запрос, чтобы привязать запрос к этому сигналу.
+
+3. **Отмена запроса**: Когда компонент размонтируется, функция очистки, возвращаемая из `useEffect`, вызывает метод `abort()` на контроллере. Это сигнализирует `fetch`, что запрос должен быть отменен.
+
+4. **Обработка отмены**: В блоке `catch` проверяется, была ли ошибка вызвана отменой запроса (`error.name === 'AbortError'`). Это позволяет отличать отмену запроса от других типов ошибок.
+
+### Другие применения:
+
+- **Отмена таймеров**: Вы можете использовать `AbortController` для отмены таймеров или других асинхронных задач, хотя для таймеров это не столь распространено. 
+
+- **Подписки**: В случае подписки на события, вы можете использовать `AbortController` для управления и отмены подписок.
+
+`AbortController` предоставляет удобный способ управления долг-running задачами и отмены их выполнения в нужный момент, что помогает избегать утечек памяти и улучшает производительность приложений.
+
+[Оглавление - JavaScript 🔼](#menu)
+
+<div id="101"></div>
+
+## 101. Какие есть способы для работы с запросами в реакте
+
+В React существует несколько способов работы с HTTP-запросами. Они различаются по сложности, возможностям и экосистеме. Вот основные подходы:
+
+### 1. **Использование встроенного `fetch()` API**
+
+Это наиболее базовый способ выполнения HTTP-запросов в React. `fetch()` — это встроенный в браузер API, который позволяет выполнять асинхронные запросы. Этот подход не требует сторонних библиотек и подходит для простых случаев.
+
+**Пример использования `fetch` в `useEffect`:**
+
+```javascript
+import React, { useState, useEffect } from 'react';
+
+function DataFetchingComponent() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/posts/1')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setData(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    return (
+        <div>
+            <h1>{data.title}</h1>
+            <p>{data.body}</p>
+        </div>
+    );
+}
+
+export default DataFetchingComponent;
+```
+
+### 2. **Использование сторонней библиотеки `Axios`**
+
+`Axios` — это популярная библиотека для выполнения HTTP-запросов, которая предлагает более удобный API по сравнению с `fetch()`. Она поддерживает такие функции, как обработка таймаутов, перехватчики запросов и ответов, автоматическое преобразование JSON и многое другое.
+
+**Пример использования `Axios`:**
+
+```javascript
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function DataFetchingComponent() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        axios.get('https://jsonplaceholder.typicode.com/posts/1')
+            .then(response => {
+                setData(response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    return (
+        <div>
+            <h1>{data.title}</h1>
+            <p>{data.body}</p>
+        </div>
+    );
+}
+
+export default DataFetchingComponent;
+```
+
+### 3. **Использование `React Query` (или аналогичных библиотек)**
+
+`React Query` — это мощная библиотека для управления состоянием и кэшированием данных, полученных из API. Она автоматически обновляет данные, поддерживает поллинги, управление состоянием загрузки и ошибок, а также повторные запросы в случае ошибки.
+
+**Пример использования `React Query`:**
+
+```javascript
+import React from 'react';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+
+function DataFetchingComponent() {
+    const { data, error, isLoading } = useQuery('post', () =>
+        axios.get('https://jsonplaceholder.typicode.com/posts/1').then(res => res.data)
+    );
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    return (
+        <div>
+            <h1>{data.title}</h1>
+            <p>{data.body}</p>
+        </div>
+    );
+}
+
+export default DataFetchingComponent;
+```
+
+### 4. **Использование `SWR`**
+
+`SWR` — это еще одна библиотека, разработанная Vercel. Она предоставляет удобный интерфейс для извлечения, кэширования и синхронизации данных из API. Она похожа на `React Query`, но более минималистична.
+
+**Пример использования `SWR`:**
+
+```javascript
+import React from 'react';
+import useSWR from 'swr';
+import axios from 'axios';
+
+const fetcher = url => axios.get(url).then(res => res.data);
+
+function DataFetchingComponent() {
+    const { data, error } = useSWR('https://jsonplaceholder.typicode.com/posts/1', fetcher);
+
+    if (!data) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    return (
+        <div>
+            <h1>{data.title}</h1>
+            <p>{data.body}</p>
+        </div>
+    );
+}
+
+export default DataFetchingComponent;
+```
+
+### 5. **Использование кастомных хуков**
+
+Кастомные хуки позволяют инкапсулировать логику работы с API в повторно используемый компонент. Это удобно для разделения кода и повторного использования запросов в различных компонентах.
+
+**Пример кастомного хука для `fetch`:**
+
+```javascript
+import { useState, useEffect } from 'react';
+
+function useFetch(url) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setData(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error);
+                setLoading(false);
+            });
+    }, [url]);
+
+    return { data, loading, error };
+}
+
+// Использование кастомного хука
+function DataFetchingComponent() {
+    const { data, loading, error } = useFetch('https://jsonplaceholder.typicode.com/posts/1');
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    return (
+        <div>
+            <h1>{data.title}</h1>
+            <p>{data.body}</p>
+        </div>
+    );
+}
+
+export default DataFetchingComponent;
+```
+
+### 6. **Использование GraphQL (Apollo Client, Relay)**
+
+Для приложений, использующих GraphQL, вы можете использовать `Apollo Client` или `Relay`. Эти библиотеки предоставляют мощные инструменты для работы с запросами, мутациями и подписками.
+
+**Пример использования `Apollo Client` с GraphQL:**
+
+```javascript
+import React from 'react';
+import { useQuery, gql } from '@apollo/client';
+
+const GET_POST = gql`
+    query GetPost($id: ID!) {
+        post(id: $id) {
+            title
+            body
+        }
+    }
+`;
+
+function DataFetchingComponent() {
+    const { loading, error, data } = useQuery(GET_POST, { variables: { id: 1 } });
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    return (
+        <div>
+            <h1>{data.post.title}</h1>
+            <p>{data.post.body}</p>
+        </div>
+    );
+}
+
+export default DataFetchingComponent;
+```
+
+### Резюме:
+
+- **`fetch()`**: Простое и встроенное решение, но требует больше кода для обработки ошибок и данных.
+- **`Axios`**: Библиотека с удобным API и дополнительными функциями.
+- **`React Query` и `SWR`**: Современные решения для управления данными с широкими возможностями кэширования и управления состоянием.
+- **Кастомные хуки**: Позволяют повторно использовать логику запросов в разных компонентах.
+- **GraphQL (Apollo, Relay)**: Специализированные библиотеки для работы с GraphQL.
+
+Выбор подхода зависит от сложности вашего проекта и предпочтений команды.
 
 [Оглавление - JavaScript 🔼](#menu)
 
