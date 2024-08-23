@@ -1,10 +1,9 @@
-<div align="center"><h1><img src="https://avatars.githubusercontent.com/u/32372333?s=280&v=4" alt="axios" width="50" height="50">JAVASCRIPT</h1></div>
+<div align="center"><h1><img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" alt="js" width="300" height="70"></h1></div>
 
-[⚙️ Menu](README.md)
+[⚙️ Back to menu](README.md)
 
  | No.|             Вопрос                   |
  |:---|:-------------------------------------|
- | | <h4 align="center">**JAVASCRIPT** [🔼](#topmenu)</h4> |
 |1|[Какие типы данных существуют в JavaScript? **Number, String, Boolean, Obj, Null, undefined, Symbol, BigInt**](#1)|
 |2| [В чем разница между операторами `==` и `===`?](#2)|
 |3| [Отличия **var** **let** и **const**?](#3)|
