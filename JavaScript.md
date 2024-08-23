@@ -2,6 +2,8 @@
 
 [⚙️ Back to menu](README.md)
 
+ <div id="menu"></div>
+ 
  | No.|             Вопрос                   |
  |:---|:-------------------------------------|
 |1|[Какие типы данных существуют в JavaScript? **Number, String, Boolean, Obj, Null, undefined, Symbol, BigInt**](#1)|
