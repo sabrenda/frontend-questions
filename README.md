@@ -16,9 +16,9 @@
 | [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](TypeScript.ms) |
 | [**⚙️ Общие вопросы**](General.md)|
 | [**📋 Задачи по JavaScript**](Tasks.md)|
-| [**Алгоритмы**](#-)|
-| [**Архитектура**](#-)|
-| [**Паттерны**](#-)|
-| [**Безопастность**](#-)|
+| [**Алгоритмы**](Algorithms.md)|
+| [**Архитектура**](Architecture.md)|
+| [**Паттерны**](Pattern.md)|
+| [**Безопастность**](Safety.md)|
 
 
