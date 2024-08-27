@@ -15,7 +15,7 @@
 | [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react)](React.md)|
 | [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](TypeScript.md) |
 | [![General](https://img.shields.io/badge/Общие_Вопросы-black?style=for-the-badge&logo=JSON%20web%20tokens)](General.md)|
-| [**📋 Задачи по JavaScript**](Tasks.md)|
+| [![Tasks](https://img.shields.io/badge/📋_Задачи_по_Js-%23FF9900.svg?style=for-the-badge)](Tasks.md)|
 | [**Алгоритмы**](Algorithms.md)|
 | [**Архитектура**](Architecture.md)|
 | [**Паттерны**](Pattern.md)|
