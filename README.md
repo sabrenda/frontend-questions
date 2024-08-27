@@ -16,7 +16,7 @@
 | [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](TypeScript.md) |
 | [![General](https://img.shields.io/badge/Общие_Вопросы-black?style=for-the-badge&logo=JSON%20web%20tokens)](General.md)|
 | [![Tasks](https://img.shields.io/badge/📋_Задачи_по_Js-%23FF9900.svg?style=for-the-badge)](Tasks.md)|
-| [**Алгоритмы**](Algorithms.md)|
-| [**Архитектура**](Architecture.md)|
-| [**Паттерны**](Pattern.md)|
-| [**Безопастность**](Safety.md)|
+| [![Algorithms](https://img.shields.io/badge/Алгоритмы-%23430098.svg?style=for-the-badge)](Algorithms.md)|
+| [![Architecture](https://img.shields.io/badge/Архитектура-%233333FF.svg?style=for-the-badge)](Architecture.md)|
+| [![Pattern](https://img.shields.io/badge/Паттерны-%232C5263.svg?style=for-the-badge)](Pattern.md)|
+| [![Safety](https://img.shields.io/badge/Безопастность-%23D90007.svg?style=for-the-badge)](Safety.md)|
