@@ -1,4 +1,4 @@
-<div align="center"><h1>⚙️ Веб - технологии / Общие вопросы</h1></div>
+<div align="center"><h1><img src="https://img.shields.io/badge/Веб_Технологии&mdash;Общие_Вопросы-black?style=for-the-badge&logo=JSON%20web%20tokens" alt="js" width="500" height="50"></h1></div>
 
 [⚙️ Back to menu](README.md)
 
