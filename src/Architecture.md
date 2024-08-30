@@ -1,6 +1,6 @@
 <div align="center"><h1>Архитектура</h1></div>
 
-[⚙️ Back to menu](README.md)
+[⚙️ Back to menu](../README.md)
 
  <div id="menu"></div>
 
