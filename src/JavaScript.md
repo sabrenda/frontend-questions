@@ -536,6 +536,39 @@ promise.then(
    });
    ```
 
+  реализация прототипа в js:
+  ```js
+function myPromiseAll(promises) {
+  return new Promise((resolve, reject) => {
+    if (!Array.isArray(promises)) {
+      return reject(new TypeError('Argument must be an array'));
+    }
+
+    const resultArray = [];
+    let completedPromises = 0;
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((value) => {
+          resultArray[index] = value;
+          completedPromises++;
+
+          if (completedPromises === promises.length) {
+            resolve(resultArray);
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+
+    if (promises.length === 0) {
+      resolve([]);
+    }
+  });
+}
+
+  ```
 4. **`Promise.race(iterable)`**
    - Возвращает промис, который разрешается или отклоняется с результатом первого завершившегося промиса в итерации.
 
@@ -546,6 +579,23 @@ promise.then(
      console.error(error);
    });
    ```
+
+     реализация прототипа в js:
+  ```js
+function myPromiseRace(promises) {
+  return new Promise((resolve, reject) => {
+    if (!Array.isArray(promises)) {
+      return reject(new TypeError('Argument must be an array'));
+    }
+
+    for (let promise of promises) {
+      Promise.resolve(promise)
+        .then(resolve)
+        .catch(reject);
+    }
+  });
+}
+  ```
 
 5. **`Promise.allSettled(iterable)`**
    - Возвращает промис, который разрешается, когда все переданные промисы завершены, независимо от того, были ли они разрешены или отклонены. Возвращает массив объектов, каждый из которых содержит статус (`fulfilled` или `rejected`) и значение или причину.
@@ -558,6 +608,40 @@ promise.then(
    });
    ```
 
+     реализация прототипа в js:
+  ```js
+   function myPromiseAllSettled(promises) {
+     return new Promise((resolve, reject) => {
+       if (!Array.isArray(promises)) {
+         return reject(new TypeError('Argument must be an array'));
+       }
+
+       const results = [];
+       let completedPromises = 0;
+
+       promises.forEach((promise, index) => {
+         Promise.resolve(promise)
+           .then((value) => {
+             results[index] = { status: 'fulfilled', value };
+           })
+           .catch((reason) => {
+             results[index] = { status: 'rejected', reason };
+           })
+           .finally(() => {
+             completedPromises++;
+             if (completedPromises === promises.length) {
+               resolve(results);
+             }
+           });
+       });
+
+       if (promises.length === 0) {
+         resolve([]);
+       }
+     });
+   }
+  ```
+
 6. **`Promise.any(iterable)`**
    - Возвращает промис, который разрешается, как только один из переданных промисов будет разрешён. Если все промисы отклонены, возвращает промис, который отклоняется с массивом причин отклонения.
 
@@ -568,6 +652,37 @@ promise.then(
      console.error('Все промисы были отклонены:', error);
    });
    ```
+
+     реализация прототипа в js:
+  ```js
+   function myPromiseAny(promises) {
+     return new Promise((resolve, reject) => {
+       if (!Array.isArray(promises)) {
+         return reject(new TypeError('Argument must be an array'));
+       }
+
+       let rejections = [];
+       let rejectedCount = 0;
+
+       promises.forEach((promise, index) => {
+         Promise.resolve(promise)
+           .then(resolve)
+           .catch((error) => {
+             rejections[index] = error;
+             rejectedCount++;
+
+             if (rejectedCount === promises.length) {
+               reject(new AggregateError(rejections, 'All promises were rejected'));
+             }
+           });
+       });
+
+       if (promises.length === 0) {
+         reject(new AggregateError([], 'No promises were passed'));
+       }
+     });
+   }
+```
 
 [Оглавление - JavaScript 🔼](#menu)
 
