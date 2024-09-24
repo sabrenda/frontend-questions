@@ -538,36 +538,35 @@ promise.then(
 
   реализация прототипа в js:
   ```js
-function myPromiseAll(promises) {
-  return new Promise((resolve, reject) => {
-    if (!Array.isArray(promises)) {
-      return reject(new TypeError('Argument must be an array'));
-    }
+   function myPromiseAll(promises) {
+     return new Promise((resolve, reject) => {
+       if (!Array.isArray(promises)) {
+         return reject(new TypeError('Argument must be an array'));
+       }
 
-    const resultArray = [];
-    let completedPromises = 0;
+       const resultArray = [];
+       let completedPromises = 0;
 
-    promises.forEach((promise, index) => {
-      Promise.resolve(promise)
-        .then((value) => {
-          resultArray[index] = value;
-          completedPromises++;
+       promises.forEach((promise, index) => {
+         Promise.resolve(promise)
+           .then((value) => {
+             resultArray[index] = value;
+             completedPromises++;
 
-          if (completedPromises === promises.length) {
-            resolve(resultArray);
-          }
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+             if (completedPromises === promises.length) {
+               resolve(resultArray);
+             }
+           })
+           .catch((err) => {
+             reject(err);
+           });
+       });
 
-    if (promises.length === 0) {
-      resolve([]);
-    }
-  });
-}
-
+       if (promises.length === 0) {
+         resolve([]);
+       }
+     });
+   }
   ```
 4. **`Promise.race(iterable)`**
    - Возвращает промис, который разрешается или отклоняется с результатом первого завершившегося промиса в итерации.
@@ -582,19 +581,19 @@ function myPromiseAll(promises) {
 
      реализация прототипа в js:
   ```js
-function myPromiseRace(promises) {
-  return new Promise((resolve, reject) => {
-    if (!Array.isArray(promises)) {
-      return reject(new TypeError('Argument must be an array'));
-    }
+   function myPromiseRace(promises) {
+     return new Promise((resolve, reject) => {
+       if (!Array.isArray(promises)) {
+         return reject(new TypeError('Argument must be an array'));
+       }
 
-    for (let promise of promises) {
-      Promise.resolve(promise)
-        .then(resolve)
-        .catch(reject);
-    }
-  });
-}
+       for (let promise of promises) {
+         Promise.resolve(promise)
+           .then(resolve)
+           .catch(reject);
+       }
+     });
+   }
   ```
 
 5. **`Promise.allSettled(iterable)`**
