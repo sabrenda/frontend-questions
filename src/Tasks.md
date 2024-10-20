@@ -27,6 +27,7 @@
 |18| [реализовать Promise.race()](#js18)|
 |19| [реализовать Promise.allSettled()](#js19)|
 |20| [реализовать Promise.any()](#js20)|
+|21| [задача checkBrackets `([{}])`](#js21)|
 
 
 ---
@@ -707,3 +708,54 @@ console.log(8);
 
 [Оглавление - Задачи 🔼](#menutasks)
 
+<div id="js21"></div>
+
+## 21. задача checkBrackets `([{}])`
+
+Решите задачу:
+```js
+function checkBrackets(str) {
+}
+```
+
+console.log(checkBrackets('([](){()})')) // true
+console.log(checkBrackets('()[]{}')) // true
+console.log(checkBrackets('({[})]')) // false
+console.log(checkBrackets('([{]])')) // false
+console.log(checkBrackets('}(')) // false
+
+// Допущение: входная строка содержит только символы ([{}])
+
+> [!NOTE]
+>   
+> <details>
+> <summary>решение:</summary>
+> 
+> ```js	
+> function checkBrackets(str) {
+>   const stack = [];
+>   const brackets = {
+>     '(': ')',
+>     '[': ']',
+>     '{': '}'
+>   };
+> 
+>   for (let char of str) {
+>     // Если символ — открывающая скобка, добавляем в стек
+>     if (brackets[char]) {
+>       stack.push(char);
+>     } 
+>     // Если символ — закрывающая скобка
+>     else {
+>       const last = stack.pop();
+>       // Если последняя открывающая скобка не соответствует закрывающей
+>       if (brackets[last] !== char) {
+>         return false;
+>       }
+>     }
+>   }
+> 
+>   // В конце проверяем, что стек пуст (все открытые скобки были закрыты)
+>   return stack.length === 0;
+> }
+>```
