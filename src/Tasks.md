@@ -22,6 +22,11 @@
 |13| [реализовать функцию 'Rest params'](#js13)|
 |14| [реализовать функцию 'Каррирование'](#js14)|
 |15| [реализовать  `EventEmitter`](#js15)|
+|16| [Асинхронность](#js16)|
+|17| [](#js17)|
+|18| [](#js18)|
+|19| [](#js19)|
+|20| [](#js20)|
 
 
 ---
@@ -520,5 +525,34 @@ class EventEmitter {
   }
 }
 ```
+
+[Оглавление - Задачи 🔼](#menutasks)
+
+<div id="js16"></div>
+
+## 16. Асинхронность
+
+```js
+console.log(1);
+
+setTimeout(() => console.log(2));
+
+Promise.resolve().then(() => console. log(3));
+
+Promise.resolve().then(() -> setTimeout(() => console.log(4)));
+
+Promise.resolve(console.log(5)).then(() => console.log(6));
+
+setTimeout(() => console.log(7));
+
+console.log(8);
+```
+
+> [!NOTE]
+>
+> <details>
+> <summary>Ответ</summary>
+>   	
+> // 1 5 8 3 6 2 7 4
 
 [Оглавление - Задачи 🔼](#menutasks)
