@@ -23,10 +23,10 @@
 |14| [реализовать функцию 'Каррирование'](#js14)|
 |15| [реализовать  `EventEmitter`](#js15)|
 |16| [Асинхронность](#js16)|
-|17| [](#js17)|
-|18| [](#js18)|
-|19| [](#js19)|
-|20| [](#js20)|
+|17| [реализовать Promise.all()](#js17)|
+|18| [реализовать Promise.race()](#js18)|
+|19| [реализовать Promise.allSettled()](#js19)|
+|20| [реализовать Promise.any()](#js20)|
 
 
 ---
@@ -526,6 +526,7 @@ class EventEmitter {
 }
 ```
 
+
 [Оглавление - Задачи 🔼](#menutasks)
 
 <div id="js16"></div>
@@ -556,3 +557,169 @@ console.log(8);
 > // 1 5 8 3 6 2 7 4
 
 [Оглавление - Задачи 🔼](#menutasks)
+
+<div id="js17"></div>
+
+## 17. реализовать Promise.all()
+
+> [!NOTE]
+>
+> <details>
+> <summary>ответ:</summary>
+>   	
+>   ```js
+>    function myPromiseAll(promises) {
+>      return new Promise((resolve, reject) => {
+>        if (!Array.isArray(promises)) {
+>          return reject(new TypeError('Argument must be an array'));
+>        }
+> 
+>        const resultArray = [];
+>        let completedPromises = 0;
+> 
+>        promises.forEach((promise, index) => {
+>          Promise.resolve(promise)
+>            .then((value) => {
+>              resultArray[index] = value;
+>              completedPromises++;
+> 
+>              if (completedPromises === promises.length) {
+>                resolve(resultArray);
+>              }
+>            })
+>            .catch((err) => {
+>              reject(err);
+>            });
+>        });
+> 
+>        if (promises.length === 0) {
+>          resolve([]);
+>        }
+>      });
+>    }
+>   ```
+> 
+> </details>
+
+[Оглавление - Задачи 🔼](#menutasks)
+
+<div id="js18"></div>
+
+## 18. реализовать Promise.race()
+
+> [!NOTE]
+>   
+> <details>
+> <summary>ответ:</summary>
+> 	
+>   ```js
+>    function myPromiseRace(promises) {
+>      return new Promise((resolve, reject) => {
+>        if (!Array.isArray(promises)) {
+>          return reject(new TypeError('Argument must be an array'));
+>        }
+> 
+>        for (let promise of promises) {
+>          Promise.resolve(promise)
+>            .then(resolve)
+>            .catch(reject);
+>        }
+>      });
+>    }
+>   ```
+> 
+> </details>
+
+[Оглавление - Задачи 🔼](#menutasks)
+
+<div id="js19"></div>
+
+## 19. реализовать Promise.allSettled()
+
+> [!NOTE]
+>   
+> <details>
+> <summary>ответ:</summary>
+> 	
+>   ```js
+>    function myPromiseAllSettled(promises) {
+>      return new Promise((resolve, reject) => {
+>        if (!Array.isArray(promises)) {
+>          return reject(new TypeError('Argument must be an array'));
+>        }
+> 
+>        const results = [];
+>        let completedPromises = 0;
+> 
+>        promises.forEach((promise, index) => {
+>          Promise.resolve(promise)
+>            .then((value) => {
+>              results[index] = { status: 'fulfilled', value };
+>            })
+>            .catch((reason) => {
+>              results[index] = { status: 'rejected', reason };
+>            })
+>            .finally(() => {
+>              completedPromises++;
+>              if (completedPromises === promises.length) {
+>                resolve(results);
+>              }
+>            });
+>        });
+> 
+>        if (promises.length === 0) {
+>          resolve([]);
+>        }
+>      });
+>    }
+>   ```
+> 
+> </details>
+
+6. **`Promise.any(iterable)`**
+
+[Оглавление - Задачи 🔼](#menutasks)
+
+<div id="js20"></div>
+
+## 20. реализовать Promise.any()
+
+> [!NOTE]
+>   
+> <details>
+> <summary>ответ:</summary>
+> 	
+>   ```js
+>    function myPromiseAny(promises) {
+>      return new Promise((resolve, reject) => {
+>        if (!Array.isArray(promises)) {
+>          return reject(new TypeError('Argument must be an array'));
+>        }
+> 
+>        let rejections = [];
+>        let rejectedCount = 0;
+> 
+>        promises.forEach((promise, index) => {
+>          Promise.resolve(promise)
+>            .then(resolve)
+>            .catch((error) => {
+>              rejections[index] = error;
+>              rejectedCount++;
+> 
+>              if (rejectedCount === promises.length) {
+>                reject(new AggregateError(rejections, 'All promises were rejected'));
+>              }
+>            });
+>        });
+> 
+>        if (promises.length === 0) {
+>          reject(new AggregateError([], 'No promises were passed'));
+>        }
+>      });
+>    }
+> ```
+> 
+> </details>
+
+[Оглавление - Задачи 🔼](#menutasks)
+
