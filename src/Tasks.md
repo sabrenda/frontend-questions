@@ -570,16 +570,12 @@ console.log(8);
 >   ```js
 >    function myPromiseAll(promises) {
 >      return new Promise((resolve, reject) => {
->        if (!Array.isArray(promises)) {
->          return reject(new TypeError('Argument must be an array'));
->        }
 > 
 >        const resultArray = [];
 >        let completedPromises = 0;
 > 
 >        promises.forEach((promise, index) => {
->          Promise.resolve(promise)
->            .then((value) => {
+>            promise.then((value) => {
 >              resultArray[index] = value;
 >              completedPromises++;
 > 
@@ -615,13 +611,9 @@ console.log(8);
 >   ```js
 >    function myPromiseRace(promises) {
 >      return new Promise((resolve, reject) => {
->        if (!Array.isArray(promises)) {
->          return reject(new TypeError('Argument must be an array'));
->        }
 > 
 >        for (let promise of promises) {
->          Promise.resolve(promise)
->            .then(resolve)
+>            promise.then(resolve)
 >            .catch(reject);
 >        }
 >      });
@@ -644,16 +636,12 @@ console.log(8);
 >   ```js
 >    function myPromiseAllSettled(promises) {
 >      return new Promise((resolve, reject) => {
->        if (!Array.isArray(promises)) {
->          return reject(new TypeError('Argument must be an array'));
->        }
 > 
 >        const results = [];
 >        let completedPromises = 0;
 > 
 >        promises.forEach((promise, index) => {
->          Promise.resolve(promise)
->            .then((value) => {
+>            promise.then((value) => {
 >              results[index] = { status: 'fulfilled', value };
 >            })
 >            .catch((reason) => {
@@ -692,16 +680,12 @@ console.log(8);
 >   ```js
 >    function myPromiseAny(promises) {
 >      return new Promise((resolve, reject) => {
->        if (!Array.isArray(promises)) {
->          return reject(new TypeError('Argument must be an array'));
->        }
 > 
 >        let rejections = [];
 >        let rejectedCount = 0;
 > 
 >        promises.forEach((promise, index) => {
->          Promise.resolve(promise)
->            .then(resolve)
+>            promise.then(resolve)
 >            .catch((error) => {
 >              rejections[index] = error;
 >              rejectedCount++;
