@@ -28,6 +28,7 @@
 |19| [реализовать Promise.allSettled()](#js19)|
 |20| [реализовать Promise.any()](#js20)|
 |21| [задача checkBrackets `([{}])`](#js21)|
+|22| [задача `findEqualElements([2], [1, 2, 3])`](#js22)|
 
 
 ---
@@ -713,10 +714,10 @@ console.log(8);
 ## 21. задача checkBrackets `([{}])`
 
 Решите задачу:
+
 ```js
 function checkBrackets(str) {
 }
-```
 
 console.log(checkBrackets('([](){()})')) // true
 console.log(checkBrackets('()[]{}')) // true
@@ -725,6 +726,7 @@ console.log(checkBrackets('([{]])')) // false
 console.log(checkBrackets('}(')) // false
 
 // Допущение: входная строка содержит только символы ([{}])
+```
 
 > [!NOTE]
 >   
@@ -759,3 +761,81 @@ console.log(checkBrackets('}(')) // false
 >   return stack.length === 0;
 > }
 >```
+> 
+> </details>
+
+[Оглавление - Задачи 🔼](#menutasks)
+
+<div id="js22"></div>
+
+## 22. задача `findEqualElements([2], [1, 2, 3])`
+
+```js
+// ==============================
+// Есть два сортированных массива с числами.
+// Нужно написать функцию, которая возвращает новый массив,
+// содержащий элементы, которые встречаются в обоих массивах.
+const a = [1, 2, 4, 7, 11, 19];
+const b = [2, 7, 19, 28, 31];
+
+// Примеры
+console.log(findEqualElements([1, 2, 3], [2])); // => [2]
+console.log(findEqualElements([2], [1, 2, 3])); // => [2]
+console.log(findEqualElements([1, 2, 2, 3], [2, 2, 2, 2])); // => [2, 2]
+console.log(findEqualElements([2, 2, 2, 2], [1, 2, 2, 3])); // => [2, 2]
+console.log(findEqualElements([1, 2, 3], [2])); // => [2]);
+```
+
+> [!NOTE]
+>   
+> <details>
+> <summary>решение:</summary>
+> 
+> ```js
+> // решение 1 через hash map
+> function findEqualElements(arr1, arr2) {
+>   const res = [];
+> 
+>   const mapa = {};
+> 
+>   for (let i = 0; i < arr1.length; i++) {
+>     if (!mapa[arr1[i]]) {
+>       mapa[arr1[i]] = 1;
+>     } else {
+>       mapa[arr1[i]] = mapa[arr1[i]] + 1;
+>     }
+>   }
+> 
+>   for (let i = 0; i < arr2.length; i++) {
+>     if (mapa[arr2[i]]) {
+>       res.push(arr2[i]);
+>       mapa[arr2[i]]--;
+>     }
+>   }
+> }
+> ```
+>
+>```js
+> // решение 2 с указателями
+> function findEqualElements(arr1, arr2) {
+>   const result = [];
+>   let i = 0;
+>   let j = 0;
+> 
+>   // Используем два указателя для прохода по массивам
+>   while (i < arr1.length && j < arr2.length) {
+>     if (arr1[i] === arr2[j]) {
+>       result.push(arr1[i]);
+>       i++;
+>       j++;
+>     } else if (arr1[i] < arr2[j]) {
+>       i++; // Если элемент в первом массиве меньше, двигаем указатель первого массива
+>     } else {
+>       j++; // Если элемент во втором массиве меньше, двигаем указатель второго массива
+>     }
+>   }
+> 
+>   return result;
+> }
+> ```
+> </details>
