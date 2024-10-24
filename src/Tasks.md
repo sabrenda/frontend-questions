@@ -29,6 +29,7 @@
 |20| [реализовать Promise.any()](#js20)|
 |21| [задача checkBrackets `([{}])`](#js21)|
 |22| [задача `findEqualElements([2], [1, 2, 3])`](#js22)|
+|23| [задача Асинхронность](#js23)|
 
 
 ---
@@ -839,3 +840,76 @@ console.log(findEqualElements([1, 2, 3], [2])); // => [2]);
 > }
 > ```
 > </details>
+
+[Оглавление - Задачи 🔼](#menutasks)
+
+<div id="js23"></div>
+
+## 23. задача Асинхронность
+
+
+```js
+const first = () => {
+  const promise = new Promise((resolve, reject) => {
+    console.log(1);
+    
+    setTimeout(() => {
+      console.log("timerStart");
+      resolve("success");
+      console.log("timerEnd");
+    }, 0);
+    
+    console.log(2);
+  });
+
+  promise.then((res) => {
+    console.log(res);
+  });
+
+  console.log(4);
+};
+
+// 1 2 4 timerStart timerEnd success
+// ==============================================
+
+
+const second = () => {
+  const timer1 = setTimeout(() => {
+    console.log("timer1");
+
+    const promise1 = Promise.resolve().then(() => {
+      console.log("promise1");
+    });
+  }, 10);
+
+  const timer2 = setTimeout(() => {
+    console.log("timer2");
+  }, 0);
+};
+
+// timer2 timer1 promise1
+// ==============================================
+
+
+const third = () => {
+  console.log("start");
+
+  const promise1 = Promise.resolve().then(() => {
+    console.log("promise1");
+    const timer2 = setTimeout(() => {
+      console.log("timer2");
+    }, 0);
+  });
+
+  const timer1 = setTimeout(() => {
+    console.log("timer1");
+    const promise2 = Promise.resolve().then(() => {
+      console.log("promise2");
+    });
+  }, 0);
+
+  console.log("end");
+};
+
+// start end promise1 timer1 promise2 timer2
+```
